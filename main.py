@@ -20,27 +20,32 @@ if __name__ == "__main__":
         for i in range(10):
             success2, image2 = cap.read()
 
-        # Flip the image horizontally for a later selfie-view display, and convert
-        # the BGR image to RGB.
-        image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+            # Flip the image horizontally for a later selfie-view display, and convert
+            # the BGR image to RGB.
+            image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
 
-        # To improve performance, optionally mark the image as not writeable to
-        # pass by reference.
-        image.flags.writeable = False
-        results = hands.process(image)
-        image.flags.writeable = True
+            # To improve performance, optionally mark the image as not writeable to
+            # pass by reference.
+            image.flags.writeable = False
+            results = hands.process(image)
+            image.flags.writeable = True
 
-        # Draw the hand annotations on the image.
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        if results.multi_hand_landmarks:
-            myhands.input(results)
-            myhands.offset()
-            myhands.adjust()
-            myhands.rotate()
-            myhands.output()
-            kindofhands = myhands.recognize(results)
-            state.change_state(kindofhands)
-            state.operate()
-            if kindofhands != 'NoDetected':
-                time.sleep(5)
+            # Draw the hand annotations on the image.
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            if results.multi_hand_landmarks:
+                myhands.input(results)
+                myhands.offset()
+                myhands.adjust()
+                myhands.rotate()
+                myhands.output()
+                kindofhands = myhands.recognize(results)
+                state.change_state(kindofhands)
+                state.operate()
+                if kindofhands != 'NoDetected':
+                    time.sleep(5)
+                # cv2.putText(image, kindofhands,
+                #             (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 2)
+            # cv2.imshow('MediaPipe Hands', image)
+            # if cv2.waitKey(5) & 0xFF == 27:
+            #     break
     cap.release()

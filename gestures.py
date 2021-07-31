@@ -1,7 +1,7 @@
 import requests
 
 headers = {
-    'Authorization': 'cabbd03732853c5c97a38218d0f1757f946153fecc1848f6246439efd3bc1b5a7ab99e54a661419c5646ba987e064072',
+    'Authorization': '',
     'Content-Type': 'application/json',
 }
 
@@ -22,7 +22,7 @@ class NoDetected(State):
 class PAPER(State):
     def operate(self):
         # turn on the light
-        requests.post('https://api.switch-bot.com/v1.0/devices/C6EF7910CF12/commands',
+        requests.post('https://api.switch-bot.com/v1.0/devices//commands',
                       headers=headers, data=turnon)
 
 
@@ -34,7 +34,7 @@ class SCISSORS(State):
 class STONE(State):
     def operate(self):
         # turn off the light
-        requests.post('https://api.switch-bot.com/v1.0/devices/C6EF7910CF12/commands',
+        requests.post('https://api.switch-bot.com/v1.0/devices//commands',
                       headers=headers, data=turnoff)
 
 

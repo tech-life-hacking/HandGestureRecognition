@@ -1,4 +1,5 @@
 import requests
+import socket
 
 headers = {
     'Authorization': '',
@@ -22,11 +23,16 @@ class NoDetected(State):
 class PAPER(State):
     def operate(self):
         # turn on the light
-        requests.post('https://api.switch-bot.com/v1.0/devices//commands',
-                      headers=headers, data=turnon)
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.sendto(b'PAPER', ('192.168.11.15', 50010))
 
 
-class SCISSORS(State):
+class OK(State):
+    def operate(self):
+        pass
+
+
+class FINGER(State):
     def operate(self):
         pass
 
@@ -34,15 +40,17 @@ class SCISSORS(State):
 class STONE(State):
     def operate(self):
         # turn off the light
-        requests.post('https://api.switch-bot.com/v1.0/devices//commands',
-                      headers=headers, data=turnoff)
+        # requests.post(
+        #     'https://maker.ifttt.com/trigger/roomba/with/key/7YWtJuaW7ZLXpa6Wnc6R4zSUalOCw1UHeFkLC7hpbh')
+        pass
 
 
 class Context:
     def __init__(self):
         self.nodetected = NoDetected()
         self.paper = PAPER()
-        self.scissors = SCISSORS()
+        self.ok = OK()
+        self.finger = FINGER()
         self.stone = STONE()
         self.state = self.nodetected
 
@@ -51,13 +59,16 @@ class Context:
             self.state = self.nodetected
         elif hand == "PAPER":
             self.state = self.paper
-        elif hand == "SCISSORS":
-            self.state = self.scissors
+        elif hand == "OK":
+            self.state = self.ok
+        elif hand == "FINGER":
+            self.state = self.finger
         elif hand == "STONE":
             self.state = self.stone
         else:
-            raise ValueError("change_state method must be in {}".format(
-                ["nodetected", "paper", "scissors", "stone"]))
+            # raise ValueError("change_state method must be in {}".format(
+            #     ["nodetected", "paper", "scissors", "stone"]))
+            pass
 
     def operate(self):
         self.state.operate()

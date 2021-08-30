@@ -41,12 +41,12 @@ class Templete():
                 else:
                     pass
 
-                self.drawing(image, results, kindofhands)
+            #     self.drawing(image, results, kindofhands)
 
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-            cv2.imshow('MediaPipe Hands', image)
-            if cv2.waitKey(5) & 0xFF == 27:
-                break
+            # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            # cv2.imshow('MediaPipe Hands', image)
+            # if cv2.waitKey(5) & 0xFF == 27:
+            #     break
 
 
     def handrecognition(self):

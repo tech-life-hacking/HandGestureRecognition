@@ -4,14 +4,13 @@ import tensorflow as tf
 
 
 class Hand():
-    def __init__(self):
+    def __init__(self, class_names, model_path):
         self.interprefer = tf.lite.Interpreter(
-            model_path="hands.tflite")
+            model_path=model_path)
         self.interprefer.allocate_tensors()
         self.input_details = self.interprefer.get_input_details()
         self.output_details = self.interprefer.get_output_details()
-        self.class_names = ['LEFTFINGER', 'LEFTOK', 'LEFTPAPER', 'LEFTSCISSORS', 'LEFTSTONE',
-                            'RIGHTFINGER', 'RIGHTOK', 'RIGHTPAPER', 'RIGHTSCISSORS', 'RIGHTSTONE']
+        self.class_names = class_names
 
     def input(self, results):
         if results.hand_rects:
@@ -37,15 +36,9 @@ class Hand():
         self.__yposition = self.__yposition / self.__height
 
     def rotate(self):
-        xs0 = []
-        ys0 = []
-        for x, y in zip(self.__xposition, self.__yposition):
-            X = x * np.cos(self.__rotation) + y * np.sin(self.__rotation)
-            Y = - x * np.sin(self.__rotation) + y * np.cos(self.__rotation)
-            xs0.append(X)
-            ys0.append(Y)
-        self.__xposition = np.array(xs0)
-        self.__yposition = np.array(ys0)
+        R = np.array([[np.cos(self.__rotation), np.sin(self.__rotation)],
+                      [-np.sin(self.__rotation),  np.cos(self.__rotation)]])
+        self.__xposition, self.__yposition = np.dot(R, (self.__xposition, self.__yposition))
 
     def output(self):
         self.handposition = np.concatenate(
@@ -53,7 +46,7 @@ class Hand():
         self.handposition = np.array(
             self.handposition, dtype='float32').reshape(1, 42, 1)
 
-    def gesturerecognize(self):
+    def recognize_gesture(self):
         self.interprefer.set_tensor(
             self.input_details[0]['index'], self.handposition)
         self.interprefer.invoke()
@@ -64,3 +57,8 @@ class Hand():
         if np.max(self.output_data) < 0.95:
             kindofhands = 'NoDetected'
         return kindofhands
+
+    def record(self, kindofhands):
+        tmp = np.array(self.handposition).reshape(42)
+        tmp = np.append(tmp, int(kindofhands))
+        self.writer.writerow(tmp)

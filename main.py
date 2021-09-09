@@ -6,7 +6,7 @@ import numpy as np
 
 class Time():
     def __init__(self):
-        self.skiptime = 5
+        self.skiptime = 1
         self.threshold = 15
         self.timer = self.threshold
 
@@ -41,12 +41,12 @@ class Templete():
                 else:
                     pass
 
-            #     self.drawing(image, results, kindofhands)
+                self.drawing(image, results, kindofhands)
 
-            # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-            # cv2.imshow('MediaPipe Hands', image)
-            # if cv2.waitKey(5) & 0xFF == 27:
-            #     break
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            cv2.imshow('MediaPipe Hands', image)
+            if cv2.waitKey(5) & 0xFF == 27:
+                break
 
 
     def handrecognition(self):
@@ -69,7 +69,7 @@ class main(Templete):
             myhands.adjust()
             myhands.rotate()
             myhands.output()
-            kindofhands = myhands.gesturerecognize()
+            kindofhands = myhands.recognize_gesture()
             return kindofhands
         else:
             return 'NoDetected'
@@ -89,6 +89,9 @@ class main(Templete):
                             (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 2)
 
 if __name__ == "__main__":
+    class_names = ['LEFTFINGER', 'LEFTOK', 'LEFTPAPER', 'LEFTSCISSORS', 'LEFTSTONE',
+                    'RIGHTFINGER', 'RIGHTOK', 'RIGHTPAPER', 'RIGHTSCISSORS', 'RIGHTSTONE']
+    model_path = "model/hands.tflite"
     cap = cv2.VideoCapture(0)
     mp_hands = mp.solutions.hands
     mp_drawing = mp.solutions.drawing_utils
@@ -96,7 +99,7 @@ if __name__ == "__main__":
         max_num_hands=1,
         min_detection_confidence=0.5,
         min_tracking_confidence=0.5)
-    myhands = hand.Hand()
+    myhands = hand.Hand(class_names, model_path)
     state = gestures.Context()
     timemanagement = Time()
     signalacceptedtimer = Time()

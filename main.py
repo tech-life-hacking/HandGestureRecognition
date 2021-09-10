@@ -18,10 +18,6 @@ class Time():
         if self.timer > self.threshold:
             self.timer = 0
 
-class OKGoogle():
-    def __init__(self, kindofhands):
-        self.kindofhands = kindofhands
-
 class Templete():
     def run(self):
         while cap.isOpened():

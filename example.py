@@ -1,6 +1,8 @@
 import hand
 import cv2
 import mediapipe as mp
+# For recording
+# import csv
 
 if __name__ == "__main__":
 
@@ -21,6 +23,10 @@ if __name__ == "__main__":
         min_tracking_confidence=0.5)
     mp_drawing = mp.solutions.drawing_utils
     mp_drawing_styles = mp.solutions.drawing_styles
+
+    # For recording
+    # f = open('handlandmarks.csv', 'w')
+    # writer = csv.writer(f)
 
     # For HandGestureRecognition
     myhands = hand.Hand(class_names, model_path)
@@ -43,7 +49,13 @@ if __name__ == "__main__":
         # Recognize gestures
         kind_of_hands = myhands.run(results)
 
+        # For recording
+        # record handlandmarks
+        # myhands.record(results, writer)
+
         # print a kind of hands
         print(kind_of_hands)
 
     cap.release()
+    # For recording
+    # f.close()

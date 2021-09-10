@@ -69,7 +69,7 @@ class Hand():
         else:
             return 'NoDetected'
 
-    def record(self, kindofhands):
-        tmp = np.array(self.handposition).reshape(42)
-        tmp = np.append(tmp, int(kindofhands))
-        self.writer.writerow(tmp)
+    def record(self, results, writer):
+        if results.multi_hand_landmarks:
+            tmp = np.array(self.handposition).reshape(42)
+            writer.writerow(tmp)

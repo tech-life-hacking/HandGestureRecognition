@@ -18,6 +18,10 @@ class Time():
         if self.timer > self.threshold:
             self.timer = 0
 
+class OKGoogle():
+    def __init__(self, kindofhands):
+        self.kindofhands = kindofhands
+
 class Templete():
     def run(self):
         while cap.isOpened():
@@ -29,9 +33,11 @@ class Templete():
 
             signalacceptedtimer.count()
             if signalacceptedtimer.timer % signalacceptedtimer.skiptime == 0:
+
                 small_image = cv2.resize(image, (0, 0), fx=0.25, fy=0.25)
                 results = hands.process(small_image)
                 kindofhands = self.handrecognition(results)
+
                 if kindofhands == 'OK':
                     timemanagement.set_timer()
                 elif timemanagement.timer < timemanagement.threshold:
@@ -63,16 +69,7 @@ class Templete():
 
 class main(Templete):
     def handrecognition(self, results):
-        if results.multi_hand_landmarks:
-            myhands.input(results)
-            myhands.offset()
-            myhands.adjust()
-            myhands.rotate()
-            myhands.output()
-            kindofhands = myhands.recognize_gesture()
-            return kindofhands
-        else:
-            return 'NoDetected'
+        return myhands.run(results)
 
     def change_state(self, kindofhands):
         state.change_state(kindofhands)

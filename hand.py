@@ -46,7 +46,7 @@ class Hand():
         self.handposition = np.array(
             self.handposition, dtype='float32').reshape(1, 42, 1)
 
-    def recognize_gesture(self):
+    def recognize(self):
         self.interprefer.set_tensor(
             self.input_details[0]['index'], self.handposition)
         self.interprefer.invoke()
@@ -57,6 +57,17 @@ class Hand():
         if np.max(self.output_data) < 0.95:
             kindofhands = 'NoDetected'
         return kindofhands
+
+    def run(self, results):
+        if results.multi_hand_landmarks:
+            self.input(results)
+            self.offset()
+            self.adjust()
+            self.rotate()
+            self.output()
+            return self.recognize()
+        else:
+            return 'NoDetected'
 
     def record(self, kindofhands):
         tmp = np.array(self.handposition).reshape(42)

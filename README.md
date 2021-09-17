@@ -11,7 +11,7 @@ RaspberryPi 4 Model B 8GB
 Ubuntu Server 21.04.2 LTS
 
 # Concepts
-At first, MediaPipe infers 21 hand landmarks from images capturing with a USB camera.
+At first, MediaPipe infers 21 hand landmarks from images captured with a USB camera.
 ![handlandmarks](https://www.techlife-hacking.com/wp-content/uploads/2021/09/hand_landmarks.png)
 
 [MediaPipe Hands](https://google.github.io/mediapipe/solutions/hands.html)

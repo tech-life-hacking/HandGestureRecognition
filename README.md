@@ -57,7 +57,6 @@ pip install tensorflow-2.6.0-cp39-none-linux_aarch64.whl
 # Usage
 After cloning this repository, excute example.
 
-## Quick Start
 ```
 python example.py
 ```

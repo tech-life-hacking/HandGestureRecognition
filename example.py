@@ -11,7 +11,7 @@ if __name__ == "__main__":
     #                 'RIGHTFINGER', 'RIGHTOK', 'RIGHTPAPER', 'RIGHTSCISSORS', 'RIGHTSTONE']
 
     # model path
-    model_path = "model/hands.tflite"
+    model_path = "model/hands_OAK.tflite"
 
     # For HandGestureRecognition
     myhands = hand.Hand(hand.OAKCamera(class_names, model_path))

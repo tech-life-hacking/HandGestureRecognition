@@ -22,6 +22,9 @@ class Devices:
 
 class OAKCamera(Devices):
     def __init__(self):
+        import os
+        import sys
+        sys.path.append(os.path.join(os.path.dirname(__file__), './depthai_hand_tracker'))
         from HandTrackerRenderer import HandTrackerRenderer
         from HandTrackerEdge import HandTracker
         self.tracker = HandTracker(stats=True)

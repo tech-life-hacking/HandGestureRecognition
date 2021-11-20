@@ -1,6 +1,5 @@
 import hand
 import cv2
-# import mediapipe as mp
 import video
 
 if __name__ == "__main__":

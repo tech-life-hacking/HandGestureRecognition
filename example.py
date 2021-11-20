@@ -1,6 +1,6 @@
-import hand
 import cv2
-import video
+import scripts.hand as hand
+import scripts.video as video
 
 if __name__ == "__main__":
 

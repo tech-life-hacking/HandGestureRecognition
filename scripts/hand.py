@@ -35,9 +35,17 @@ class Hand():
             self.rotate()
             self.output()
             self.record()
-            return self.recognize()
         else:
             return 'NoDetected'
+
+    def get_gestures(self):
+        return self.recognize()
+
+    def get_frame_center(self):
+        return self.devices.get_frame_center()
+
+    def get_wrist(self):
+        return self.devices.get_wrist()
 
 class Devices:
     def input(self, hands):
@@ -54,12 +62,23 @@ class OAKCamera(Devices):
         self.class_names = class_names
 
     def input(self, hands):
-        for hand in hands:
-            self.__rotation = hand.rotation
-            self.__width = hand.rect_w_a
-            self.__height = hand.rect_h_a
-            self.__xposition = hand.landmarks[:,0]
-            self.__yposition = hand.landmarks[:,1]
+        if hands:
+            for hand in hands:
+                self.__rotation = hand.rotation
+                self.__width = hand.rect_w_a
+                self.__height = hand.rect_h_a
+                self.__xposition = hand.landmarks[:,0]
+                self.__yposition = hand.landmarks[:,1]
+                self.frame_center = [hand.rect_x_center_a, hand.rect_y_center_a]
+                self.wrist = [hand.xyz[0] / 10, hand.xyz[1] / 10, hand.xyz[2] / 10]
+        else:
+            pass
+
+    def get_frame_center(self):
+        return self.frame_center
+
+    def get_wrist(self):
+        return self.wrist
 
     def offset(self):
         self.__xposition = self.__xposition - self.__xposition[0]

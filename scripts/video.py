@@ -13,6 +13,9 @@ class VideoCap():
     def exit(self):
         self.devices.exit()
 
+    def get_cameraframesize(self):
+        return self.devices.get_cameraframesize()
+
 class Devices:
     def capture(self):
         raise NotImplementedError()
@@ -27,7 +30,8 @@ class OAKCamera(Devices):
         sys.path.append(os.path.join(os.path.dirname(__file__), './../depthai_hand_tracker'))
         from HandTrackerRenderer import HandTrackerRenderer
         from HandTrackerEdge import HandTracker
-        self.tracker = HandTracker(stats=True)
+        self.tracker = HandTracker(stats=True, xyz=True)
+        self.frame_size = self.tracker.frame_size
         self.renderer = HandTrackerRenderer(self.tracker)
         self.hands = []
 
@@ -42,6 +46,9 @@ class OAKCamera(Devices):
     def exit(self):
         self.tracker.exit()
         self.renderer.exit()
+
+    def get_cameraframesize(self):
+        return self.frame_size
 
 class RGBCamera(Devices):
     def __init__(self):

@@ -16,6 +16,7 @@ if __name__ == "__main__":
     # For HandGestureRecognition
     myhands = hand.Hand(hand.OAKCamera(class_names, model_path))
     videocap = video.VideoCap(video.OAKCamera())
+    frame_size = videocap.get_cameraframesize()
 
     while True:
 
@@ -23,10 +24,13 @@ if __name__ == "__main__":
 
         try:
             # Recognize gestures
-            kind_of_hands = myhands.run(hands)
+            myhands.run(hands)
+            kind_of_hands = myhands.get_gestures()
+            wrist = myhands.get_wrist()
+            frame_center = myhands.get_frame_center()
             cv2.putText(frame, kind_of_hands,
                         (0, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 2)
-        except IndexError:
+        except:
             pass
 
         videocap.show(frame)

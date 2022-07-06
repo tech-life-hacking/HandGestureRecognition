@@ -60,6 +60,7 @@ class OAKCamera(Devices):
         self.input_details = self.interprefer.get_input_details()
         self.output_details = self.interprefer.get_output_details()
         self.class_names = class_names
+        self.handposition = np.zeros(42).astype(np.float32).reshape(1, 42, 1)
 
     def input(self, hands):
         if hands:
